@@ -1,7 +1,5 @@
 const request = require('request');
 //get bill data and put urls into array
-//probably do this through recursive function
-//endpoint entually next url will be null
 function GetBills(apiURL,limit){
 	this.apiURL = apiURL;
 	this.limit = limit
@@ -34,6 +32,7 @@ GetBills.prototype.getBillData = function(offset,dataArray) {
 					let currentObject = {};
 					currentObject.name = currentBill.name;
 					currentObject.url = currentBill.url;
+					currentObject.number = currentBill.number;
 					currentObject.session = currentBill.session;
 					currentObject.introduced = currentBill.introduced;
 					currentObject.legisinfo_id = currentBill.legisinfo_id;
@@ -50,7 +49,7 @@ GetBills.prototype.getBillData = function(offset,dataArray) {
 		}.bind(this));
 	});
 
-	return promise
+	return promise;
 };
 
 module.exports = {GetBills};
