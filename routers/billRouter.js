@@ -8,10 +8,10 @@ router.get("/",(req,res) => {
 	let getBills;
 	getBills = new GetBills(APIURL,limit);
 
-	return getBills.getBillData()
+	return getBills.getBillData(0)
 
 	.then(billData => {
-		console.log("Bill data: ",billData);
+		console.log("Bill data==================================================",billData.length);
 		return res.json({
 			status:400,
 			message:"All done"
