@@ -6,7 +6,7 @@ const billSchema = mongoose.Schema({
 	bill_number:{type:String,required:true},
 	session:{type:String,required:true},
 	introduced_date:{type:String,required:true},
-	legisinfo_id:{type:String,required:true}
+	legisinfo_id:{type:String,required:true,unique:true}
 });
 
 billSchema.methods.serialize = function(){
