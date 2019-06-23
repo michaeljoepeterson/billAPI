@@ -22,17 +22,20 @@ router.get("/",(req,res) => {
 		allBillData = billData;
 		return checkLegIds(allBillData)
 	})
-	/*
 	//get bill indexes with the correct status
 	.then(billData => {
 		return getBillsStatus(allBillData,0,[])
 	})
-	*/
 	//save to database modify to work with the 
 	//correct status index array
 	.then(billIndexes => {
 		console.log("bill indexes=================================",billIndexes.length)
-		return saveBill([allBillData[0],allBillData[1]],0)
+		let finalBills = [];
+		for(let i = 0;i < billIndexes.length;i++){
+			finalBills.push(allBillData[billIndexes[i]]);
+		}
+		console.log("final bill data length", finalBills.length);
+		return saveBill(finalBills,0)
 	})
 
 	.then(billCreatedData => {
