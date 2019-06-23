@@ -50,6 +50,47 @@ function getBillsStatus(billData,billIndex,billIndexArray){
 	return promise;
 }
 
+function removeCopies(billData){
+	let promise = new Promise((resolve,reject) => {
+		let filteredData = [];
+		let idObject = {};
+		for(let i = 0;i < billData.length;i++){
+			let identifier = billData[i].legisinfo_id;
+			if(!idObject[identifier]){
+				idObject[identifier] = i;
+				filteredData.push(billData[i]);
+			}
+		}
+		resolve(filteredData);
+	});
+
+	return promise;
+}
+
+function checkLegIds(billData){
+	let promise = new Promise((resolve,reject) => {
+		let idObject = {};
+		let copyIds = {};
+		for(let i = 0;i < billData.length;i++){
+			//let identifier = billData[i].number + billData[i].session;
+			let identifier = billData[i].legisinfo_id;
+			if(!idObject[identifier]){
+				idObject[identifier] = i;
+			}
+			else{
+				console.log("found copy: ",billData[i],billData[idObject[identifier]],i,idObject[identifier]);
+				copyIds[identifier] = i;
+			}
+		}
+		if(Object.keys(copyIds).length === 0){
+			console.log("no copies");
+		}
+		resolve(copyIds);
+	});
+
+	return promise;
+}
+
 function saveBill(billData){
 	let promise = new Promise((resolve,reject) => {
 		resolve(Bills.create({
@@ -83,4 +124,4 @@ function handleBills(billData,billIndex){
 	return promise;
 }
 
-module.exports = {getBillsStatus,saveBill};
+module.exports = {getBillsStatus,saveBill,checkLegIds,removeCopies};

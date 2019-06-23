@@ -2,7 +2,7 @@ const express = require("express");
 const {APIURL} = require('../config');
 const {GetBills} = require('../getBills/GetBills');
 const router = express.Router();
-const {getBillsStatus,saveBill} = require('../db/billDB');
+const {getBillsStatus,saveBill,checkLegIds,removeCopies} = require('../db/billDB');
 
 router.get("/",(req,res) => {
 	let limit = req.query.limit;
@@ -13,8 +13,18 @@ router.get("/",(req,res) => {
 
 	.then(billData => {
 		console.log("Bill data==================================================",billData.length);
+		return removeCopies(billData)
+	})
+	.then(billData => {
+		console.log("Filtered Bill data==================================================",billData.length);
 		allBillData = billData;
-		return getBillsStatus(billData,0,[])
+		return checkLegIds(allBillData)
+	})
+
+	.then(billData => {
+		//console.log("Bill data==================================================",billData);
+		//allBillData = billData;
+		return getBillsStatus(allBillData,0,[])
 	})
 
 	.then(billIndexes => {
