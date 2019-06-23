@@ -9,28 +9,32 @@ router.get("/",(req,res) => {
 	let getBills;
 	getBills = new GetBills(APIURL,limit);
 	let allBillData;
+	//get all bill data
 	return getBills.getBillData(0)
-
+	//filter data copies
 	.then(billData => {
 		console.log("Bill data==================================================",billData.length);
 		return removeCopies(billData)
 	})
+	//check filtered copies
 	.then(billData => {
 		console.log("Filtered Bill data==================================================",billData.length);
 		allBillData = billData;
 		return checkLegIds(allBillData)
 	})
-
+	/*
+	//get bill indexes with the correct status
 	.then(billData => {
-		//console.log("Bill data==================================================",billData);
-		//allBillData = billData;
 		return getBillsStatus(allBillData,0,[])
 	})
-
+	*/
+	//save to database modify to work with the 
+	//correct status index array
 	.then(billIndexes => {
 		console.log("bill indexes=================================",billIndexes.length)
-		return saveBill(allBillData[0])
+		return saveBill([allBillData[0],allBillData[1]],0)
 	})
+
 	.then(billCreatedData => {
 		console.log("Bill created data==================================================",billCreatedData);
 		return res.json({

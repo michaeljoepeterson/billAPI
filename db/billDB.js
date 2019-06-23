@@ -16,7 +16,7 @@ function getBillsStatus(billData,billIndex,billIndexArray){
 	};
 
 	let promise = new Promise((resolve,reject) => {
-		if(billIndex !== billData.length - 1){
+		if(billIndex !== billData.length){
 			let newUrl = APIURL + billData[billIndex].url;
 			
 			const options = {
@@ -91,16 +91,40 @@ function checkLegIds(billData){
 	return promise;
 }
 
-function saveBill(billData){
+function saveBill(billData,billIndex){
 	let promise = new Promise((resolve,reject) => {
-		resolve(Bills.create({
-			bill_description:billData.name,
-			bill_url:billData.url,
-			bill_number:billData.number,
-			session:billData.session,
-			introduced_date:billData.introduced,
-			legisinfo_id:billData.legisinfo_id
-		}));
+		console.log("save bill data: ",billIndex,billData.length);
+		if(billIndex !== billData.length){
+			/*
+			resolve(Bills.create({
+				bill_description:billData.name,
+				bill_url:billData.url,
+				bill_number:billData.number,
+				session:billData.session,
+				introduced_date:billData.introduced,
+				legisinfo_id:billData.legisinfo_id
+			}));
+			*/
+			console.log("saving data");
+			Bills.create({
+				bill_description:billData[billIndex].name,
+				bill_url:billData[billIndex].url,
+				bill_number:billData[billIndex].number,
+				session:billData[billIndex].session,
+				introduced_date:billData[billIndex].introduced,
+				legisinfo_id:billData[billIndex].legisinfo_id
+			})
+			.then(data => {
+				resolve(saveBill(billData,billIndex + 1));
+			})
+			.catch(err => {
+				console.log("error saving data: ",err);
+			});
+		}
+		else{
+			resolve("all done");
+		}
+		
 	});
 
 	return promise;
