@@ -109,7 +109,7 @@ function saveBill(billData,billIndex){
 				resolve(saveBill(billData,billIndex + 1));
 			})
 			.catch(err => {
-				console.log("error saving data: ",err);
+				console.log("error saving data: ",err,billIndex,billData[billIndex]);
 			});
 		}
 		else{

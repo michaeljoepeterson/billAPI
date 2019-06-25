@@ -1,11 +1,18 @@
 const express = require("express");
-const {APIURL} = require('../config');
+const {APIURL,ck} = require('../config');
 const {GetBills} = require('../getBills/GetBills');
 const router = express.Router();
 const {getBillsStatus,saveBill,checkLegIds,removeCopies} = require('../db/billDB');
 
 router.get("/",(req,res) => {
 	let limit = req.query.limit;
+	let CK = req.query.ck;
+	if(CK !== ck){
+		return res.json({
+			status:500,
+			message:"Error"
+		});
+	}
 	let getBills;
 	getBills = new GetBills(APIURL,limit);
 	let allBillData;
