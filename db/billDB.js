@@ -73,6 +73,7 @@ function checkLegIds(billData){
 		let copyIds = {};
 		for(let i = 0;i < billData.length;i++){
 			//let identifier = billData[i].number + billData[i].session;
+			//3621454 3628710 10586892
 			let identifier = billData[i].legisinfo_id;
 			if(!idObject[identifier]){
 				idObject[identifier] = i;
@@ -109,31 +110,18 @@ function saveBill(billData,billIndex){
 				resolve(saveBill(billData,billIndex + 1));
 			})
 			.catch(err => {
-				console.log("error saving data: ",err,billIndex,billData[billIndex]);
+				console.log("error saving data: ",err);
+				console.log("error saving data bill data: ",billData[billIndex]);
+				console.log("error saving data bill data cont: ",billIndex,billData.length);
+				if(err.errmsg.includes("E11000")){
+					resolve(saveBill(billData,billIndex + 1));
+				}
 			});
 		}
 		else{
 			resolve("all done");
 		}
 		
-	});
-
-	return promise;
-}
-//use this function to handle saving all the data then 
-//return promise for router so router continues 
-//when all checks and saving done
-function handleBills(billData,billIndex){
-	let promise = new Promise((resolve,reject) => {
-
-		return getSingleBill(billData[billIndex])
-
-
-		.then(billUrl => {
-
-		})
-
-		resolve();
 	});
 
 	return promise;

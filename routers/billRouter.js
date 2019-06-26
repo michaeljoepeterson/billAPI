@@ -7,7 +7,7 @@ const {getBillsStatus,saveBill,checkLegIds,removeCopies} = require('../db/billDB
 router.get("/",(req,res) => {
 	let limit = req.query.limit;
 	let CK = req.query.ck;
-	if(CK !== ck){
+	if(CK !== ck || !CK){
 		return res.json({
 			status:500,
 			message:"Error"
