@@ -21,4 +21,25 @@ router.get("/",(req,res) => {
 	})
 });
 
+router.get("/bill",(req,res) => {
+	let legId = req.query.legid;
+	return Bills.find({legisinfo_id:legId})
+
+	.then(bill => {
+		console.log("Length single: ",bill.length);
+		return res.json({
+			status:200,
+			data:bill
+		});
+	})
+	.catch(err => {
+		console.log("error getting data: ",err);
+		return res.json({
+			status:500,
+			message:"An error occured"
+		})
+	})
+});
+
+
 module.exports = {router};
