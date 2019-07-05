@@ -31,8 +31,8 @@ function getBillsStatus(billData,billIndex,billIndexArray){
 				console.log("found one: ",parsedBody.status_code,newUrl,billIndexArray,billIndex);
 				if(billStatus[parsedBody.status_code]){
 					//billIndexArray
-					
-					billIndexArray.push(billIndex);
+					let extraData = {billIndex:billIndex,status:parsedBody.status_code}
+					billIndexArray.push(extraData);
 					console.log("found one add: ",billIndexArray);
 					resolve(getBillsStatus(billData,billIndex + 1,billIndexArray));
 				}
@@ -104,7 +104,8 @@ function saveBill(billData,billIndex){
 				bill_number:billData[billIndex].number,
 				session:billData[billIndex].session,
 				introduced_date:billData[billIndex].introduced,
-				legisinfo_id:billData[billIndex].legisinfo_id
+				legisinfo_id:billData[billIndex].legisinfo_id,
+				status:billData[billIndex].status
 			})
 			.then(data => {
 				resolve(saveBill(billData,billIndex + 1));

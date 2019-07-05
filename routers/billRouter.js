@@ -39,7 +39,8 @@ router.get("/",(req,res) => {
 		console.log("bill indexes=================================",billIndexes.length)
 		let finalBills = [];
 		for(let i = 0;i < billIndexes.length;i++){
-			finalBills.push(allBillData[billIndexes[i]]);
+			finalBills.push(allBillData[billIndexes[i].billIndex]);
+			finalBills[i].status = billIndexes[i].status;
 		}
 		console.log("final bill data length", finalBills.length);
 		return saveBill(finalBills,0)
