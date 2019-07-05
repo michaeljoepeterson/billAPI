@@ -5,10 +5,12 @@ const mongoose = require("mongoose");
 const bodyParser = require("body-parser");
 const jsonParser = bodyParser.json();
 const {router:getBillRouter} = require('./routers/billRouter');
+const {router:getBillDataRouter} = require('./routers/getBills');
 const app = express();
 
 app.use(jsonParser);
 app.use("/getBills",getBillRouter);
+app.use("/api/bills",getBillDataRouter);
 
 function runServer( databaseUrl, port = PORT) {
   return new Promise((resolve, reject) => {

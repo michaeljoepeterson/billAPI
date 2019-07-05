@@ -17,7 +17,7 @@ billSchema.methods.serialize = function(){
 		bill_number:this.bill_number,
 		session:this.session,
 		introduced_date:this.introduced_date,
-		legsinfo_id:this.legsinfo_id
+		legisinfo_id:this.legisinfo_id
 	}
 }
 
