@@ -5,6 +5,28 @@ function GetBills(apiURL,limit){
 	this.limit = limit
 }
 
+GetBills.prototype.getSingleBillData = function(singleBill){
+	let promise = new Promise((resolve,reject) => {
+		let newUrl = this.apiURL + singleBill[0].bill_url;
+		//console.log(singleBill,singleBill["bill_url"]);
+		const options = {
+			url:newUrl,
+			headers:{
+				Accept: 'application/json',
+				'Content-Type': 'application/json'
+			}
+		};
+
+		request(options,function(error,response,body){
+			//console.log(body);
+			const parsedBody = JSON.parse(body);
+			resolve(parsedBody);
+		});
+	});
+
+	return promise;
+}
+
 GetBills.prototype.getBillData = function(offset,dataArray) {
 	if(dataArray === undefined){
 		dataArray = [];

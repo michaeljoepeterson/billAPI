@@ -1,9 +1,12 @@
 const express = require("express");
 const router = express.Router();
 const {Bills} = require("../models/billModel");
+const {APIURL} = require('../config');
+const {GetBills} = require('../getBills/GetBills');
 //return all bills
 router.get("/",(req,res) => {
-	return Bills.find({}).limit(20)
+	let billLimit = parseInt(req.query.limit ? req.query.limit : 0);
+	return Bills.find({}).limit(billLimit)
 
 	.then(bills => {
 		console.log("Length: ",bills.length);
@@ -22,14 +25,20 @@ router.get("/",(req,res) => {
 });
 
 router.get("/bill",(req,res) => {
-	let legId = req.query.legid;
+	const legId = req.query.legid;
+	const getBill = new GetBills(APIURL)
 	return Bills.find({legisinfo_id:legId})
 
 	.then(bill => {
-		console.log("Length single: ",bill.length);
+		
+		return getBill.getSingleBillData(bill)
+		
+	})
+
+	.then(billData => {
 		return res.json({
 			status:200,
-			data:bill
+			data:billData
 		});
 	})
 	.catch(err => {
