@@ -28,12 +28,12 @@ function getBillsStatus(billData,billIndex,billIndexArray){
 			};
 			request(options,function(error,response,body){
 				const parsedBody = JSON.parse(body);
-				console.log("found one: ",parsedBody.status_code,newUrl,billIndexArray,billIndex);
+				console.log("found one: ",parsedBody.status_code,newUrl,billIndex);
 				if(billStatus[parsedBody.status_code]){
 					//billIndexArray
 					let extraData = {billIndex:billIndex,status:parsedBody.status_code}
 					billIndexArray.push(extraData);
-					console.log("found one add: ",billIndexArray);
+					console.log("found one add: ",billData[billIndex]);
 					resolve(getBillsStatus(billData,billIndex + 1,billIndexArray));
 				}
 				else{
@@ -94,7 +94,7 @@ function checkLegIds(billData){
 
 function saveBill(billData,billIndex){
 	let promise = new Promise((resolve,reject) => {
-		console.log("save bill data: ",billIndex,billData.length);
+		console.log("save bill data: ",billIndex,billData.length,billData[billIndex]);
 		if(billIndex !== billData.length){
 
 			console.log("saving data");
@@ -105,7 +105,12 @@ function saveBill(billData,billIndex){
 				session:billData[billIndex].session,
 				introduced_date:billData[billIndex].introduced,
 				legisinfo_id:billData[billIndex].legisinfo_id,
-				status:billData[billIndex].status
+				status:billData[billIndex].status,
+				votes:{
+					yes:0,
+					no:0
+				},
+				emails:{}
 			})
 			.then(data => {
 				resolve(saveBill(billData,billIndex + 1));
