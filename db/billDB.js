@@ -110,7 +110,7 @@ function saveBill(billData,billIndex){
 					yes:0,
 					no:0
 				},
-				emails:{}
+				emails:[]
 			})
 			.then(data => {
 				resolve(saveBill(billData,billIndex + 1));

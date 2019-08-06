@@ -9,7 +9,7 @@ const billSchema = mongoose.Schema({
 	legisinfo_id:{type:String,required:true,unique:true},
 	status:{type:String},
 	votes:{type:Object},
-	emails:{type:Object}
+	emails:{type:Array}
 },{minimize:false});
 
 billSchema.methods.serialize = function(){

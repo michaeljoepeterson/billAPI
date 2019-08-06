@@ -9,6 +9,7 @@ let checkEmails = function(req, res, next){
 		//console.log(bill);
 		if(!bill[0].emails[email]){
 			req.billEmails = bill[0].emails;
+			
 			console.log('Email good');
 			next();
 		}
