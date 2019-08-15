@@ -1,4 +1,5 @@
 const {Bills} = require("../models/billModel");
+const {Votes} = require("../models/voteModel");
 const request = require('request');
 const {APIURL} = require('../config');
 //this function will need to check the status of the bill
@@ -96,25 +97,31 @@ function saveBill(billData,billIndex){
 	let promise = new Promise((resolve,reject) => {
 		console.log("save bill data: ",billIndex,billData.length,billData[billIndex]);
 		if(billIndex !== billData.length){
-
 			console.log("saving data");
-			Bills.create({
-				bill_description:billData[billIndex].name,
-				bill_url:billData[billIndex].url,
-				bill_number:billData[billIndex].number,
-				session:billData[billIndex].session,
-				introduced_date:billData[billIndex].introduced,
+			return Votes.create({
 				legisinfo_id:billData[billIndex].legisinfo_id,
-				status:billData[billIndex].status,
-				votes:{
-					yes:0,
-					no:0
-				},
+				yes:0,
+				total:0,
 				emails:[]
 			})
+
+			.then(vote => {
+				return Bills.create({
+					bill_description:billData[billIndex].name,
+					bill_url:billData[billIndex].url,
+					bill_number:billData[billIndex].number,
+					session:billData[billIndex].session,
+					introduced_date:billData[billIndex].introduced,
+					legisinfo_id:billData[billIndex].legisinfo_id,
+					status:billData[billIndex].status,
+					votes:vote._id
+				})
+			})
+			
 			.then(data => {
 				resolve(saveBill(billData,billIndex + 1));
 			})
+			
 			.catch(err => {
 				console.log("error saving data: ",err);
 				console.log("error saving data bill data: ",billData[billIndex]);

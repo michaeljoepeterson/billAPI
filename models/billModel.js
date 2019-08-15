@@ -8,8 +8,7 @@ const billSchema = mongoose.Schema({
 	introduced_date:{type:String,required:true},
 	legisinfo_id:{type:String,required:true,unique:true},
 	status:{type:String},
-	votes:{type:Object},
-	emails:{type:Array}
+	votes:{type: mongoose.Schema.Types.ObjectId, ref: 'Vote', unique: false, required: [false, 'No vote found']}
 },{minimize:false});
 
 billSchema.methods.serialize = function(){
@@ -21,10 +20,9 @@ billSchema.methods.serialize = function(){
 		introduced_date:this.introduced_date,
 		legisinfo_id:this.legisinfo_id,
 		status:this.status,
-		votes:this.votes,
-		emails:this.emails
+		votes:this.votes
 	}
-}
+};
 
 const Bills = mongoose.model("Bill",billSchema);
 module.exports = {Bills};
