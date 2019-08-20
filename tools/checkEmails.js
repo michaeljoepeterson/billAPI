@@ -1,15 +1,14 @@
-const {Bills} = require("../models/billModel");
+const {Votes} = require("../models/voteModel");
 
 let checkEmails = function(req, res, next){
 	const email = req.body.email;
 	const legId = req.query.legid;
-	return Bills.find({legisinfo_id:legId})
+	return Votes.find({legisinfo_id:legId})
 
-	.then(bill => {
+	.then(vote => {
 		//console.log(bill);
-		if(!bill[0].emails[email]){
-			req.billEmails = bill[0].emails;
-			
+		if(!vote[0].emails.includes(email)){
+			req.voteEmails = vote[0].emails;
 			console.log('Email good');
 			next();
 		}
