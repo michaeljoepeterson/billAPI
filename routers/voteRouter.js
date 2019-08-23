@@ -32,4 +32,25 @@ router.post('/',checkBody,checkEmails,(req,res)=>{
 	});
 });
 
+router.get('/',(req,res)=>{
+	const legId = req.query.legid;
+
+	return Votes.find({legisinfo_id:legId})
+
+	.then(vote => {
+		console.log('updated vote: ', vote);
+		return res.json({
+			status:200,
+			vote
+		});
+	})
+	.catch(err => {
+		console.log('errr voting',err);
+		return res.json({
+			status:200,
+			message:'Error voting'
+		});
+	});
+});
+
 module.exports = {router};
