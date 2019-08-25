@@ -38,7 +38,7 @@ router.get('/',(req,res)=>{
 	return Votes.find({legisinfo_id:legId})
 
 	.then(vote => {
-		console.log('updated vote: ', vote);
+		console.log('got vote: ', vote);
 		return res.json({
 			status:200,
 			vote
